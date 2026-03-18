@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ─────────────────────────────────────── */
+:root {
+  --black:   #080808;
+  --bone:    #E8E0D0;
+  --dim:     #9A9080;
+  --accent:  #E8431A;
+  --surface: #111111;
+  --border:  #222222;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ── Base Reset ────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto;
+  /* Prevent ANY horizontal overflow at the root */
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--bone);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  max-width: 100vw;
+  /* Only hide cursor on non-touch devices */
+  cursor: none;
+}
+
+/* On touch devices restore normal cursor */
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto; }
+  button, a { cursor: pointer; }
+}
+
+/* ── Custom Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 999px; }
+
+/* ── Grain Overlay ─────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ── Typography Utilities ──────────────────────────────── */
+.font-display { font-family: 'Bebas Neue', cursive; }
+
+.text-huge {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(3.2rem, 11vw, 13rem);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+
+.text-large {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(2rem, 6vw, 7rem);
+  line-height: 0.95;
+}
+
+.text-medium {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(1.3rem, 3vw, 3.5rem);
+  line-height: 1;
+}
+
+.text-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ── Section Layout ────────────────────────────────────── */
+.section {
+  padding: clamp(3rem, 8vw, 9rem) clamp(1.2rem, 5vw, 5rem);
+}
+
+.container-wide {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 clamp(1.2rem, 4vw, 4rem);
+  /* Prevent content escaping container */
+  overflow-x: hidden;
+}
+
+/* ── Lines / Dividers ──────────────────────────────────── */
+.line {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Accent dot ────────────────────────────────────────── */
+.dot-accent {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-left: 4px;
+  vertical-align: super;
+}
+
+/* ── GSAP clip-reveal base ─────────────────────────────── */
+.reveal-wrap {
+  overflow: hidden;
+  display: block;
+}
+.reveal-inner {
+  display: block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+/* ── Image hover scale ─────────────────────────────────── */
+.img-hover {
+  overflow: hidden;
+}
+.img-hover img {
+  transition: transform 0.8s var(--ease-out-expo);
+}
+.img-hover:hover img {
+  transform: scale(1.06);
+}
+
+/* ── Button styles ─────────────────────────────────────── */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: transparent;
+  cursor: none;
+  transition: border-color 0.3s, background 0.3s, color 0.3s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--black);
+}
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--black);
+  cursor: none;
+  transition: background 0.3s, transform 0.2s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-solid:hover {
+  background: var(--bone);
+  transform: translateY(-2px);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .btn-outline, .btn-solid { cursor: pointer; }
+}
+
+/* ── Marquee ───────────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: marquee 22s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Contact form ──────────────────────────────────────── */
+.form-field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--bone);
+  outline: none;
+  transition: border-color 0.3s;
+  cursor: none;
+}
+.form-field::placeholder { color: var(--dim); }
+.form-field:focus { border-color: var(--accent); }
+
+@media (hover: none) and (pointer: coarse) {
+  .form-field { cursor: auto; }
+}
+
+/* ── Page loader ───────────────────────────────────────── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loader-text {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(3rem, 8vw, 8rem);
+  color: var(--bone);
+  overflow: hidden;
+}
+
+/* ── Mobile photo grid override ────────────────────────── */
+@media (max-width: 640px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-auto-rows: 160px !important;
+  }
+  .photo-tall  { grid-row: span 1 !important; }
+  .photo-wide  { grid-column: span 2 !important; }
+}
+
+/* ── Works mobile: vertical stack ──────────────────────── */
+@media (max-width: 767px) {
+  .works-track {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 0 clamp(1.2rem, 4vw, 2rem) clamp(2rem, 5vw, 4rem) !important;
+  }
+  .works-card {
+    width: 100% !important;
+    margin-top: 0 !important;
+  }
+  .works-card-img {
+    height: 260px !important;
+  }
+}
