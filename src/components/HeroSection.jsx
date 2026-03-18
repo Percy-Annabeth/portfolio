@@ -103,7 +103,6 @@ export default function HeroSection() {
             willChange: 'transform', overflow: 'hidden', zIndex: 0,
           }}
         >
-          {/* REPLACE: your hero image — put in /public/images/ and use src="/images/yourfile.jpg" */}
           <img
             src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&q=85"
             alt="Hero"
@@ -133,7 +132,7 @@ export default function HeroSection() {
             position: 'relative', zIndex: 2,
             display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
             padding: '0 clamp(1.2rem,5vw,5rem) clamp(2.5rem,5vw,5rem)',
-            overflow: 'visible',   /* KEY: must be visible so pill isn't clipped */
+            overflow: 'visible',
           }}
         >
           {/* Label */}
@@ -147,22 +146,12 @@ export default function HeroSection() {
 
           {/* Line 1 — YOUR */}
           <div style={{ overflow: 'hidden', marginBottom: '0.03em' }}>
-            <h1
-              ref={line1Ref}
-              className="text-huge"
-              style={{ color: 'var(--bone)', display: 'block' }}
-            >
+            <h1 ref={line1Ref} className="text-huge" style={{ color: 'var(--bone)', display: 'block' }}>
               YOUR
             </h1>
           </div>
 
-          {/*
-            Line 2 — NAME + pill image
-            KEY FIXES:
-            1. The wrapper div does NOT have overflow:hidden — pill is taller than text
-            2. Pill uses a fixed aspect ratio and objectFit:cover so image never distorts
-            3. lineHeight:1 on h1 so the text and pill align naturally
-          */}
+          {/* Line 2 — NAME + pill */}
           <div style={{ marginBottom: '0.03em' }}>
             <h1
               ref={line2Ref}
@@ -177,25 +166,39 @@ export default function HeroSection() {
                 overflow: 'visible',
               }}
             >
-              {/* REPLACE with your name */}
               NAME
 
-              {/* Pill image — replace src with your photo */}
+              {/*
+                Pill image.
+                Width and height both use clamp properly:
+                  min value < mid value < max value
+                Mobile (~375px wide): 9vw = ~34px wide, so height ~55px
+                Laptop (~1200px wide): 9vw = ~108px wide, height ~145px
+                The CSS media query below halves the height on small screens.
+              */}
               <span
+                className="hero-pill"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width:  'clamp(55px,9vw,130px)',
-                  height: 'clamp(145px,5vw,75px)',
+                  width:  'clamp(40px, 9vw, 130px)',
+                  height: 'clamp(70px, 13vw, 145px)',
                   borderRadius: '999px',
                   overflow: 'hidden',
                   flexShrink: 0,
                   verticalAlign: 'middle',
-                  /* slight border so it reads against dark backgrounds */
                   border: '1px solid rgba(232,224,208,0.15)',
                 }}
               >
+                <style>{`
+                  @media (max-width: 600px) {
+                    .hero-pill {
+                      width:  clamp(28px, 9vw, 50px) !important;
+                      height: clamp(44px, 13vw, 70px) !important;
+                    }
+                  }
+                `}</style>
                 <img
                   src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=85"
                   alt="profile"
@@ -203,7 +206,7 @@ export default function HeroSection() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    objectPosition: 'center top',  /* show face not chest */
+                    objectPosition: 'center top',
                     display: 'block',
                     flexShrink: 0,
                   }}
@@ -214,11 +217,7 @@ export default function HeroSection() {
 
           {/* Line 3 — HERE */}
           <div style={{ overflow: 'hidden', marginBottom: 'clamp(1.2rem,2.5vw,2rem)' }}>
-            <h1
-              ref={line3Ref}
-              className="text-huge"
-              style={{ color: 'var(--accent)', display: 'block' }}
-            >
+            <h1 ref={line3Ref} className="text-huge" style={{ color: 'var(--accent)', display: 'block' }}>
               HERE
             </h1>
           </div>
@@ -228,25 +227,18 @@ export default function HeroSection() {
             display: 'flex', alignItems: 'flex-end',
             justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
           }}>
-            <p
-              ref={subRef}
-              style={{
-                fontSize: 'clamp(0.8rem,1.5vw,1rem)',
-                color: 'var(--dim)', maxWidth: '300px',
-                lineHeight: 1.7, fontWeight: 300,
-              }}
-            >
-              {/* REPLACE with your tagline */}
+            <p ref={subRef} style={{
+              fontSize: 'clamp(0.8rem,1.5vw,1rem)',
+              color: 'var(--dim)', maxWidth: '300px',
+              lineHeight: 1.7, fontWeight: 300,
+            }}>
+              {/* REPLACE */}
               Filmmaker · Photographer · Storyteller.<br />
               Based in New Delhi.
             </p>
 
             <div ref={ctaRef} style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-              <button
-                onClick={scrollToWork}
-                className="btn-solid"
-                style={{ fontSize: '0.75rem', padding: '0.75rem 1.5rem' }}
-              >
+              <button onClick={scrollToWork} className="btn-solid" style={{ fontSize: '0.75rem', padding: '0.75rem 1.5rem' }}>
                 See My Work
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
                   <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
