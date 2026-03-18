@@ -51,7 +51,6 @@ export default function HeroSection() {
       '<-0.8'
     )
 
-    // Parallax desktop only
     const mm = gsap.matchMedia()
     mm.add('(min-width: 768px)', () => {
       gsap.to(imgRef.current, {
@@ -82,15 +81,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/*
-        THE FIX:
-        Instead of flex-end (which lets content grow upward past navbar),
-        we use a grid with two rows:
-          Row 1: spacer that = navbar height (70px) — always empty, always safe
-          Row 2: the actual text content, bottom-aligned within remaining space
-
-        This guarantees "YOUR" can NEVER overlap the navbar on any screen.
-      */}
       <section
         ref={heroRef}
         id="hero"
@@ -99,7 +89,7 @@ export default function HeroSection() {
           height: '100svh',
           minHeight: '600px',
           display: 'grid',
-          gridTemplateRows: '70px 1fr',   /* row1 = navbar clearance, row2 = content */
+          gridTemplateRows: '70px 1fr',
           overflow: 'hidden',
           width: '100%',
           maxWidth: '100vw',
@@ -109,21 +99,17 @@ export default function HeroSection() {
         <div
           ref={imgRef}
           style={{
-            position: 'absolute',
-            inset: 0,
-            willChange: 'transform',
-            overflow: 'hidden',
-            zIndex: 0,
+            position: 'absolute', inset: 0,
+            willChange: 'transform', overflow: 'hidden', zIndex: 0,
           }}
         >
-          {/* REPLACE: your hero image — put in /public/images/ */}
+          {/* REPLACE: your hero image — put in /public/images/ and use src="/images/yourfile.jpg" */}
           <img
             src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&q=85"
             alt="Hero"
             style={{
               width: '100%', height: '115%',
-              objectFit: 'cover', objectPosition: 'center',
-              display: 'block',
+              objectFit: 'cover', objectPosition: 'center', display: 'block',
             }}
           />
         </div>
@@ -138,19 +124,16 @@ export default function HeroSection() {
           }}
         />
 
-        {/* Row 1 — empty navbar spacer, zIndex keeps it above bg */}
+        {/* Row 1 — navbar spacer */}
         <div style={{ zIndex: 2 }} />
 
-        {/* Row 2 — all text content, sits in remaining space */}
+        {/* Row 2 — text content */}
         <div
           style={{
-            position: 'relative',
-            zIndex: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',   /* push text to bottom of this row */
+            position: 'relative', zIndex: 2,
+            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
             padding: '0 clamp(1.2rem,5vw,5rem) clamp(2.5rem,5vw,5rem)',
-            overflow: 'hidden',
+            overflow: 'visible',   /* KEY: must be visible so pill isn't clipped */
           }}
         >
           {/* Label */}
@@ -162,13 +145,25 @@ export default function HeroSection() {
             Creative Portfolio
           </p>
 
-          {/* Big heading */}
+          {/* Line 1 — YOUR */}
           <div style={{ overflow: 'hidden', marginBottom: '0.03em' }}>
-            <h1 ref={line1Ref} className="text-huge" style={{ color: 'var(--bone)', display: 'block' }}>
+            <h1
+              ref={line1Ref}
+              className="text-huge"
+              style={{ color: 'var(--bone)', display: 'block' }}
+            >
               YOUR
             </h1>
           </div>
-          <div style={{ overflow: 'hidden', marginBottom: '0.03em' }}>
+
+          {/*
+            Line 2 — NAME + pill image
+            KEY FIXES:
+            1. The wrapper div does NOT have overflow:hidden — pill is taller than text
+            2. Pill uses a fixed aspect ratio and objectFit:cover so image never distorts
+            3. lineHeight:1 on h1 so the text and pill align naturally
+          */}
+          <div style={{ marginBottom: '0.03em' }}>
             <h1
               ref={line2Ref}
               className="text-huge"
@@ -177,28 +172,53 @@ export default function HeroSection() {
                 WebkitTextStroke: '1px var(--bone)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 'clamp(0.4rem,1.5vw,1rem)',
+                gap: 'clamp(0.5rem,1.5vw,1.2rem)',
+                lineHeight: 1,
+                overflow: 'visible',
               }}
             >
+              {/* REPLACE with your name */}
               NAME
-              <span style={{
-                display: 'inline-block',
-                width: 'clamp(50px,8vw,120px)',
-                height: 'clamp(28px,4.5vw,70px)',
-                borderRadius: '999px',
-                overflow: 'hidden',
-                flexShrink: 0,
-              }}>
+
+              {/* Pill image — replace src with your photo */}
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width:  'clamp(55px,9vw,130px)',
+                  height: 'clamp(145px,5vw,75px)',
+                  borderRadius: '999px',
+                  overflow: 'hidden',
+                  flexShrink: 0,
+                  verticalAlign: 'middle',
+                  /* slight border so it reads against dark backgrounds */
+                  border: '1px solid rgba(232,224,208,0.15)',
+                }}
+              >
                 <img
-                  src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&q=80"
-                  alt=""
-                  style={{ width: '120px', height: '220%', objectFit: 'cover' }}
+                  src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=85"
+                  alt="profile"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center top',  /* show face not chest */
+                    display: 'block',
+                    flexShrink: 0,
+                  }}
                 />
               </span>
             </h1>
           </div>
+
+          {/* Line 3 — HERE */}
           <div style={{ overflow: 'hidden', marginBottom: 'clamp(1.2rem,2.5vw,2rem)' }}>
-            <h1 ref={line3Ref} className="text-huge" style={{ color: 'var(--accent)', display: 'block' }}>
+            <h1
+              ref={line3Ref}
+              className="text-huge"
+              style={{ color: 'var(--accent)', display: 'block' }}
+            >
               HERE
             </h1>
           </div>
@@ -208,17 +228,25 @@ export default function HeroSection() {
             display: 'flex', alignItems: 'flex-end',
             justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
           }}>
-            <p ref={subRef} style={{
-              fontSize: 'clamp(0.8rem,1.5vw,1rem)',
-              color: 'var(--dim)', maxWidth: '300px',
-              lineHeight: 1.7, fontWeight: 300,
-            }}>
+            <p
+              ref={subRef}
+              style={{
+                fontSize: 'clamp(0.8rem,1.5vw,1rem)',
+                color: 'var(--dim)', maxWidth: '300px',
+                lineHeight: 1.7, fontWeight: 300,
+              }}
+            >
               {/* REPLACE with your tagline */}
               Filmmaker · Photographer · Storyteller.<br />
               Based in New Delhi.
             </p>
+
             <div ref={ctaRef} style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
-              <button onClick={scrollToWork} className="btn-solid" style={{ fontSize: '0.75rem', padding: '0.75rem 1.5rem' }}>
+              <button
+                onClick={scrollToWork}
+                className="btn-solid"
+                style={{ fontSize: '0.75rem', padding: '0.75rem 1.5rem' }}
+              >
                 See My Work
                 <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
                   <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
