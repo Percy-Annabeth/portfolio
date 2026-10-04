@@ -147,7 +147,7 @@ export default function HeroSection() {
           {/* Line 1 — YOUR */}
           <div style={{ overflow: 'hidden', marginBottom: '0.03em' }}>
             <h1 ref={line1Ref} className="text-huge" style={{ color: 'var(--bone)', display: 'block' }}>
-              YOUR
+              TANISHQ
             </h1>
           </div>
 
@@ -166,7 +166,7 @@ export default function HeroSection() {
                 overflow: 'visible',
               }}
             >
-              NAME
+              KAKKAR
 
               {/*
                 Pill image.
