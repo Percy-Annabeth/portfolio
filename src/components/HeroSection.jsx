@@ -10,7 +10,6 @@ export default function HeroSection() {
   const heroRef       = useRef(null)
   const line1Ref      = useRef(null)
   const line2Ref      = useRef(null)
-  const line3Ref      = useRef(null)
   const subRef        = useRef(null)
   const ctaRef        = useRef(null)
   const scrollRef     = useRef(null)
@@ -27,7 +26,7 @@ export default function HeroSection() {
       yPercent: -100, duration: 0.9, ease: 'power4.inOut',
     }, '-=0.1')
     .fromTo(
-      [line1Ref.current, line2Ref.current, line3Ref.current],
+      [line1Ref.current, line2Ref.current],
       { y: '110%', opacity: 0 },
       { y: '0%', opacity: 1, duration: 1, stagger: 0.12, ease: 'power4.out' },
       '-=0.3'
@@ -144,15 +143,15 @@ export default function HeroSection() {
             Creative Portfolio
           </p>
 
-          {/* Line 1 — YOUR */}
+          {/* Line 1 — first name */}
           <div style={{ overflow: 'hidden', marginBottom: '0.03em' }}>
             <h1 ref={line1Ref} className="text-huge" style={{ color: 'var(--bone)', display: 'block' }}>
-              YOUR
+              TANISHQ
             </h1>
           </div>
 
           {/* Line 2 — NAME + pill */}
-          <div style={{ marginBottom: '0.03em' }}>
+          <div style={{ marginBottom: 'clamp(1.2rem,2.5vw,2rem)' }}>
             <h1
               ref={line2Ref}
               className="text-huge"
@@ -166,7 +165,7 @@ export default function HeroSection() {
                 overflow: 'visible',
               }}
             >
-              NAME
+              KAKKAR
 
               {/*
                 Pill image.
@@ -215,13 +214,6 @@ export default function HeroSection() {
             </h1>
           </div>
 
-          {/* Line 3 — HERE */}
-          <div style={{ overflow: 'hidden', marginBottom: 'clamp(1.2rem,2.5vw,2rem)' }}>
-            <h1 ref={line3Ref} className="text-huge" style={{ color: 'var(--accent)', display: 'block' }}>
-              HERE
-            </h1>
-          </div>
-
           {/* Sub + CTA */}
           <div style={{
             display: 'flex', alignItems: 'flex-end',
@@ -229,11 +221,11 @@ export default function HeroSection() {
           }}>
             <p ref={subRef} style={{
               fontSize: 'clamp(0.8rem,1.5vw,1rem)',
-              color: 'var(--dim)', maxWidth: '300px',
+              color: 'var(--dim)', maxWidth: '420px',
               lineHeight: 1.7, fontWeight: 300,
             }}>
               {/* REPLACE */}
-              Filmmaker · Photographer · Storyteller.<br />
+              Filmmaker · Photographer · Storyteller · Editor.<br />
               Based in New Delhi.
             </p>
 

@@ -15,10 +15,8 @@ const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID'
 
 // REPLACE with your actual social links
 const socials = [
-  { label: 'Instagram', href: 'https://instagram.com/yourhandle' },
-  { label: 'LinkedIn',  href: 'https://linkedin.com/in/yourprofile' },
+  { label: 'Instagram · @_tanishqkakkar_', href: 'https://instagram.com/_tanishqkakkar_' },
   { label: 'YouTube',   href: 'https://youtube.com/@yourchannel' },
-  { label: 'Behance',   href: 'https://behance.net/yourprofile' },
 ]
 
 export default function ContactSection() {
@@ -86,7 +84,7 @@ export default function ContactSection() {
         {/* Big heading */}
         <div ref={headingRef} style={{ marginBottom: 'clamp(3rem,6vw,7rem)' }}>
           <p className="text-label" style={{ marginBottom: '0.8rem' }}>
-            <span style={{ color: 'var(--accent)', marginRight: '8px' }}>05</span>
+            <span style={{ color: 'var(--accent)', marginRight: '8px' }}>03</span>
             Get In Touch
           </p>
           <h2
@@ -217,7 +215,7 @@ export default function ContactSection() {
             <div>
               <p className="text-label" style={{ marginBottom: '0.8rem' }}>Direct Email</p>
               <a
-                href="mailto:your@email.com"
+                href="mailto:kakkartanishq9212@gmail.com"
                 style={{
                   fontFamily: "'Bebas Neue', cursive",
                   fontSize: 'clamp(1.2rem,2.5vw,2rem)',
@@ -225,12 +223,12 @@ export default function ContactSection() {
                   textDecoration: 'none',
                   transition: 'color 0.3s',
                   display: 'block',
+                  overflowWrap: 'anywhere',
                 }}
                 onMouseEnter={e => e.target.style.color = 'var(--accent)'}
                 onMouseLeave={e => e.target.style.color = 'var(--bone)'}
               >
-                {/* REPLACE with your email */}
-                YOUR@EMAIL.COM
+                KAKKARTANISHQ9212@GMAIL.COM
               </a>
             </div>
 
@@ -238,7 +236,7 @@ export default function ContactSection() {
             <div>
               <p className="text-label" style={{ marginBottom: '0.8rem' }}>WhatsApp / Phone</p>
               <a
-                href="tel:+919999999999"
+                href="tel:+919811466438"
                 style={{
                   fontFamily: "'Bebas Neue', cursive",
                   fontSize: 'clamp(1.2rem,2.5vw,2rem)',
@@ -250,8 +248,7 @@ export default function ContactSection() {
                 onMouseEnter={e => e.target.style.color = 'var(--accent)'}
                 onMouseLeave={e => e.target.style.color = 'var(--bone)'}
               >
-                {/* REPLACE with your number */}
-                +91 99999 99999
+                +91 98114 66438
               </a>
             </div>
 

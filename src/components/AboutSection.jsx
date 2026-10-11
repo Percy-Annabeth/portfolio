@@ -6,10 +6,9 @@ gsap.registerPlugin(ScrollTrigger)
 
 // Stats — replace with your own numbers
 const stats = [
-  { value: '5+',  label: 'Years Active'       },
-  { value: '80+', label: 'Projects Completed' },
-  { value: '12+', label: 'Brands Worked With' },
-  { value: '3',   label: 'Awards'             },
+  { value: '5+',   label: 'Years Active'       },
+  { value: '100+', label: 'Projects Completed' },
+  { value: '10+',  label: 'Brands Worked With' },
 ]
 
 export default function AboutSection() {
@@ -203,18 +202,6 @@ export default function AboutSection() {
                 Available for collaborations, commissions, and long-term creative partnerships.
               </p>
             </div>
-
-            {/* CTA */}
-            <a
-              href="#contact"
-              onClick={e => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
-              className="btn-outline"
-            >
-              Work with me
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
           </div>
         </div>
 

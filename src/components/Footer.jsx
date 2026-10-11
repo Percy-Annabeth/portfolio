@@ -7,8 +7,6 @@ gsap.registerPlugin(ScrollTrigger)
 const footerLinks = [
   { label: 'Work',    href: '#works'   },
   { label: 'About',  href: '#about'   },
-  { label: 'Skills', href: '#skills'  },
-  { label: 'Video',  href: '#video'   },
   { label: 'Contact',href: '#contact' },
 ]
 
@@ -66,7 +64,6 @@ export default function Footer() {
               lineHeight: 1,
               letterSpacing: '-0.01em',
               transition: 'color 0.4s, -webkit-text-stroke-color 0.4s',
-              cursor: 'none',
             }}
             onMouseEnter={e => {
               e.target.style.color = 'var(--bone)'
@@ -92,7 +89,7 @@ export default function Footer() {
               background: 'none',
               border: '1px solid var(--border)',
               padding: '1rem',
-              cursor: 'none',
+              cursor: 'pointer',
               transition: 'border-color 0.3s',
               flexShrink: 0,
             }}
@@ -139,7 +136,7 @@ export default function Footer() {
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: 'var(--dim)',
-                    cursor: 'none',
+                    cursor: 'pointer',
                     transition: 'color 0.25s',
                   }}
                   onMouseEnter={e => e.target.style.color = 'var(--bone)'}

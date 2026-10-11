@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { projects } from '../data/projects'
+import { projects, MORE_WORK_URL } from '../data/projects'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -23,6 +24,8 @@ function chunk(arr, n) {
 
 export default function WorksSection() {
   const headingRef = useRef(null)
+  const [activeVideo, setActiveVideo] = useState(null)
+  const closeVideo = useCallback(() => setActiveVideo(null), [])
 
   useEffect(() => {
     gsap.fromTo(headingRef.current,
@@ -71,7 +74,7 @@ export default function WorksSection() {
       {/* Cards */}
       <div style={{ padding: '0 clamp(1.2rem,5vw,5rem) clamp(2rem,4vw,4rem)' }}>
         {rows.map((pair, rowIndex) => (
-          <ProjectRow key={rowIndex} pair={pair} rowIndex={rowIndex} />
+          <ProjectRow key={rowIndex} pair={pair} rowIndex={rowIndex} onPlay={setActiveVideo} />
         ))}
       </div>
 
@@ -86,7 +89,18 @@ export default function WorksSection() {
         borderTop: '1px solid var(--border)',
         paddingTop: 'clamp(1.5rem,3vw,2.5rem)',
       }}>
-        <p style={{ color: 'var(--dim)', fontSize: '0.78rem' }}>More projects coming soon.</p>
+        <a
+          href={MORE_WORK_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-outline"
+          style={{ fontSize: '0.62rem', padding: '0.5rem 1.1rem' }}
+        >
+          See more
+          <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
         <a
           href="#contact"
           onClick={e => { e.preventDefault(); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) }}
@@ -96,12 +110,14 @@ export default function WorksSection() {
           Start a project
         </a>
       </div>
+
+      {activeVideo && <VideoModal project={activeVideo} onClose={closeVideo} />}
     </section>
   )
 }
 
 // ── One row: 2 cards desktop, stacked mobile ─────────────────
-function ProjectRow({ pair, rowIndex }) {
+function ProjectRow({ pair, rowIndex, onPlay }) {
   const rowRef = useRef(null)
 
   useEffect(() => {
@@ -190,7 +206,7 @@ function ProjectRow({ pair, rowIndex }) {
       `}</style>
 
       {pair.map((project) => (
-        <ProjectCard key={project.id} project={project} />
+        <ProjectCard key={project.id} project={project} onPlay={onPlay} />
       ))}
 
       {/* Fill last slot if odd count */}
@@ -218,13 +234,24 @@ function ProjectRow({ pair, rowIndex }) {
   )
 }
 
-// ── Single project card ───────────────────────────────────────
-function ProjectCard({ project }) {
+// ── Single video card ─────────────────────────────────────────
+function ProjectCard({ project, onPlay }) {
   const [hovered, setHovered] = useState(false)
+  const [thumbFailed, setThumbFailed] = useState(false)
+
+  // Google Drive serves a poster frame for any video shared as "Anyone with the link"
+  const thumb = `https://drive.google.com/thumbnail?id=${project.driveId}&sz=w1000`
+
+  const play = () => onPlay(project)
 
   return (
     <div
       className="proj-card"
+      role="button"
+      tabIndex={0}
+      aria-label={`Play ${project.title}`}
+      onClick={play}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play() } }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -236,7 +263,7 @@ function ProjectCard({ project }) {
         transition: 'border-color 0.35s',
       }}
     >
-      {/* Image */}
+      {/* Thumbnail */}
       <div style={{
         width: '100%',
         aspectRatio: '16/10',
@@ -244,32 +271,39 @@ function ProjectCard({ project }) {
         position: 'relative',
         background: 'var(--border)',
       }}>
-        <img
-          src={project.cover}
-          alt={project.title}
-          loading="lazy"
-          style={{
-            width: '100%', height: '100%',
-            objectFit: 'cover', display: 'block',
-            transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1)',
-            transform: hovered ? 'scale(1.07)' : 'scale(1)',
-          }}
-        />
+        {!thumbFailed && (
+          <img
+            src={thumb}
+            alt={project.title}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={() => setThumbFailed(true)}
+            style={{
+              width: '100%', height: '100%',
+              objectFit: 'cover', display: 'block',
+              transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1)',
+              transform: hovered ? 'scale(1.07)' : 'scale(1)',
+            }}
+          />
+        )}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'rgba(8,8,8,0.45)',
-          opacity: hovered ? 1 : 0,
-          transition: 'opacity 0.4s',
+          background: hovered ? 'rgba(8,8,8,0.45)' : 'rgba(8,8,8,0.2)',
+          transition: 'background 0.4s',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{
-            fontFamily: "'Bebas Neue',cursive",
-            fontSize: '0.82rem', letterSpacing: '0.22em',
-            color: 'var(--bone)',
-            border: '1px solid rgba(232,224,208,0.45)',
-            padding: '0.5rem 1.2rem',
+            width: 'clamp(52px,6vw,72px)', height: 'clamp(52px,6vw,72px)',
+            borderRadius: '50%',
+            border: '1px solid rgba(232,224,208,0.6)',
+            background: hovered ? 'var(--accent)' : 'rgba(8,8,8,0.55)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'background 0.3s, transform 0.3s',
+            transform: hovered ? 'scale(1.08)' : 'scale(1)',
           }}>
-            View Project
+            <svg width="22" height="22" viewBox="0 0 24 24" fill={hovered ? 'var(--black)' : 'var(--bone)'} style={{ marginLeft: '3px' }}>
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </span>
         </div>
       </div>
@@ -283,7 +317,7 @@ function ProjectCard({ project }) {
           }}>
             {project.category}
           </span>
-          <span style={{ fontSize: '0.6rem', color: 'var(--dim)' }}>{project.year}</span>
+          {project.year && <span style={{ fontSize: '0.6rem', color: 'var(--dim)' }}>{project.year}</span>}
         </div>
         <h3 style={{
           fontFamily: "'Bebas Neue',cursive",
@@ -294,13 +328,15 @@ function ProjectCard({ project }) {
         }}>
           {project.title}
         </h3>
-        <p style={{
-          fontSize: '0.78rem', color: 'var(--dim)',
-          lineHeight: 1.6, marginBottom: '0.8rem',
-        }}>
-          {project.description}
-        </p>
-        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+        {project.description && (
+          <p style={{
+            fontSize: '0.78rem', color: 'var(--dim)',
+            lineHeight: 1.6, marginBottom: '0.8rem',
+          }}>
+            {project.description}
+          </p>
+        )}
+        <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginTop: project.description ? 0 : '0.6rem' }}>
           {project.tags.map(tag => (
             <span key={tag} style={{
               fontSize: '0.57rem', letterSpacing: '0.1em',
@@ -313,5 +349,99 @@ function ProjectCard({ project }) {
         </div>
       </div>
     </div>
+  )
+}
+
+// ── Video player popup ────────────────────────────────────────
+// Plays the Google Drive video in an embedded player. Close with ✕, Esc, or by clicking outside.
+function VideoModal({ project, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+
+    // Freeze the page behind the popup while it is open
+    const prevOverflow = document.documentElement.style.overflow
+    document.documentElement.style.overflow = 'hidden'
+
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.documentElement.style.overflow = prevOverflow
+    }
+  }, [onClose])
+
+  return createPortal(
+    <div
+      data-lenis-prevent
+      role="dialog"
+      aria-modal="true"
+      aria-label={project.title}
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 20000,
+        background: 'rgba(8,8,8,0.93)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: 'clamp(0.8rem,4vw,3rem)',
+      }}
+    >
+      <div onClick={e => e.stopPropagation()} style={{ width: 'min(1100px, 100%)' }}>
+        {/* Title + close */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: '1rem', marginBottom: '0.8rem',
+        }}>
+          <p style={{
+            fontFamily: "'Bebas Neue',cursive",
+            fontSize: 'clamp(1.1rem,2.5vw,1.6rem)',
+            color: 'var(--bone)', lineHeight: 1,
+          }}>
+            {project.title}
+          </p>
+          <button
+            onClick={onClose}
+            aria-label="Close video"
+            style={{
+              background: 'none', border: '1px solid var(--border)',
+              color: 'var(--bone)', width: '38px', height: '38px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0, transition: 'border-color 0.3s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+            onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Player */}
+        <div style={{
+          position: 'relative', width: '100%', aspectRatio: '16/9',
+          background: '#000', border: '1px solid var(--border)',
+        }}>
+          <iframe
+            src={`https://drive.google.com/file/d/${project.driveId}/preview`}
+            title={project.title}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
+          />
+        </div>
+
+        <a
+          href={`https://drive.google.com/file/d/${project.driveId}/view`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block', marginTop: '0.8rem',
+            fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase',
+            color: 'var(--dim)', textDecoration: 'none',
+          }}
+        >
+          Not loading? Open in Google Drive ↗
+        </a>
+      </div>
+    </div>,
+    document.body
   )
 }

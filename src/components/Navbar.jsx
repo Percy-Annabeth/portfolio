@@ -4,8 +4,6 @@ import { gsap } from 'gsap'
 const links = [
   { label: 'Work',    href: '#works'   },
   { label: 'About',  href: '#about'   },
-  { label: 'Skills', href: '#skills'  },
-  { label: 'Contact',href: '#contact' },
 ]
 
 export default function Navbar() {
@@ -116,7 +114,7 @@ export default function Navbar() {
                   fontFamily: "'DM Sans', sans-serif",
                   fontSize: '0.75rem', fontWeight: 500,
                   letterSpacing: '0.14em', textTransform: 'uppercase',
-                  color: 'var(--dim)', cursor: 'none',
+                  color: 'var(--dim)', cursor: 'pointer',
                   transition: 'color 0.25s', padding: '0.2rem 0',
                 }}
                 onMouseEnter={e => e.target.style.color = 'var(--bone)'}
