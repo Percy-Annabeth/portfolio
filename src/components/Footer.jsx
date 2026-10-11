@@ -74,8 +74,7 @@ export default function Footer() {
               e.target.style.WebkitTextStrokeColor = 'var(--border)'
             }}
           >
-            {/* REPLACE with your name */}
-            YOURNAME
+            TANISHQ KAKKAR
           </h2>
 
           {/* Back to top */}
@@ -119,7 +118,7 @@ export default function Footer() {
       >
         {/* Copyright */}
         <p style={{ fontSize: '0.72rem', color: 'var(--dim)', letterSpacing: '0.06em' }}>
-          © {new Date().getFullYear()} {/* REPLACE */}YourName. All rights reserved.
+          © {new Date().getFullYear()} Tanishq Kakkar. All rights reserved.
         </p>
 
         {/* Footer nav */}

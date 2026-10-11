@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { PROFILE_PHOTO, HERO_BG, HERO_BG_FALLBACK } from '../data/images'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -103,7 +104,8 @@ export default function HeroSection() {
           }}
         >
           <img
-            src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1600&q=85"
+            src={HERO_BG}
+            onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = HERO_BG_FALLBACK }}
             alt="Hero"
             style={{
               width: '100%', height: '115%',
@@ -199,7 +201,8 @@ export default function HeroSection() {
                   }
                 `}</style>
                 <img
-                  src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=85"
+                  src={PROFILE_PHOTO}
+                  referrerPolicy="no-referrer"
                   alt="profile"
                   style={{
                     width: '100%',

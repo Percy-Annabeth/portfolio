@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { PROFILE_PHOTO } from '../data/images'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -120,7 +121,8 @@ export default function AboutSection() {
           >
             {/* REPLACE: your portrait/about photo */}
             <img
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=85"
+              src={PROFILE_PHOTO}
+              referrerPolicy="no-referrer"
               alt="Portrait"
               style={{
                 width: '100%',
