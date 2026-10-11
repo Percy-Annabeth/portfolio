@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { closeAllWork, isAllWorkOpen, useAllWorkOpen } from '../hooks/allWorkRoute'
 
 const links = [
   { label: 'Work',    href: '#works'   },
@@ -11,6 +12,7 @@ export default function Navbar() {
   const menuRef  = useRef(null)
   const [open, setOpen] = useState(false)
   const lastY    = useRef(0)
+  const allWorkOpen = useAllWorkOpen()
 
   useEffect(() => {
     gsap.fromTo(navRef.current,
@@ -18,6 +20,11 @@ export default function Navbar() {
       { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.3 }
     )
   }, [])
+
+  // The All Work page sits under this navbar — make sure the navbar is visible on it
+  useEffect(() => {
+    if (allWorkOpen && navRef.current) gsap.to(navRef.current, { y: 0, duration: 0.3, ease: 'power2.out' })
+  }, [allWorkOpen])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,10 +53,12 @@ export default function Navbar() {
 
   const scrollTo = (href) => {
     setOpen(false)
+    const wasAllWork = isAllWorkOpen()
+    if (wasAllWork) closeAllWork()
     setTimeout(() => {
       const el = document.querySelector(href)
       if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }, 50)
+    }, wasAllWork ? 250 : 50)
   }
 
   return (
@@ -87,7 +96,7 @@ export default function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+          onClick={(e) => { e.preventDefault(); closeAllWork(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
           style={{
             fontFamily: "'Bebas Neue', cursive",
             fontSize: '1.5rem',

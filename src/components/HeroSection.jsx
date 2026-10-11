@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { PROFILE_PHOTO, HERO_BG, HERO_BG_FALLBACK } from '../data/images'
+import { PROFILE_PHOTO, HERO_BG_CANDIDATES, HERO_BG_FALLBACK } from '../data/images'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -104,8 +104,16 @@ export default function HeroSection() {
           }}
         >
           <img
-            src={HERO_BG}
-            onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = HERO_BG_FALLBACK }}
+            src={HERO_BG_CANDIDATES[0]}
+            data-try="0"
+            onError={e => {
+              // file not found under this name/extension → try the next one, then the stock photo
+              const img = e.currentTarget
+              const next = Number(img.dataset.try) + 1
+              img.dataset.try = String(next)
+              if (next < HERO_BG_CANDIDATES.length) img.src = HERO_BG_CANDIDATES[next]
+              else { img.onerror = null; img.src = HERO_BG_FALLBACK }
+            }}
             alt="Hero"
             style={{
               width: '100%', height: '115%',

@@ -6,6 +6,7 @@ import WorksSection   from './components/WorksSection'
 import AboutSection   from './components/AboutSection'
 import ContactSection from './components/ContactSection'
 import Footer         from './components/Footer'
+import AllWorkPage    from './components/AllWorkPage'
 
 export default function App() {
   // Init smooth scroll globally
@@ -15,6 +16,9 @@ export default function App() {
     <>
       {/* Fixed navigation */}
       <Navbar />
+
+      {/* "See more" page — slides over the site, under the navbar. Opens at  #/work */}
+      <AllWorkPage />
 
       {/* ── Page sections in order ─────────────────────── */}
       <main>

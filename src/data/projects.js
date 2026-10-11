@@ -11,9 +11,21 @@
 //  `year` and `description` are optional: leave them out (or '') to hide them.
 // ─────────────────────────────────────────────────────────────
 
-// "See more" button in Selected Work opens this Drive folder
-export const MORE_WORK_URL =
-  'https://drive.google.com/drive/folders/1sweEMBdNRdT9jccZtFsPsta-YruSApgm'
+// Google Drive folder that holds ALL your videos. The "See more" page lists everything in it.
+// The folder (and the videos) must be shared as "Anyone with the link".
+export const DRIVE_FOLDER_ID = '1sweEMBdNRdT9jccZtFsPsta-YruSApgm'
+export const MORE_WORK_URL = `https://drive.google.com/drive/folders/${DRIVE_FOLDER_ID}`
+
+// Free Google Drive API key — lets the "See more" page read the folder automatically,
+// so new videos you upload to Drive appear on the site without any code change.
+// Either paste the key here, or (better) set it in Vercel as  VITE_DRIVE_API_KEY.
+// While this is empty, the "See more" page shows the videos from `projects` + `extraWork`.
+export const DRIVE_API_KEY = ''
+
+// Optional: videos to show on the "See more" page by hand (used only when there is no API key).
+// Copy the format of the entries below:
+//   { id: 'x1', title: 'My Video', driveId: 'FILE_ID_FROM_DRIVE_LINK' },
+export const extraWork = []
 
 export const projects = [
   {

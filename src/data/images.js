@@ -10,8 +10,19 @@ export const PROFILE_PHOTO =
   'https://drive.google.com/thumbnail?id=181OIZXZeXGZYy4esppFTccg12vTzOd4a&sz=w1200'
 
 // Hero background — a file from your laptop.
-// Put it in  public/images/  and name it  hero-bg.jpg  (or change the name below).
-export const HERO_BG = '/images/hero-bg.jpg'
+// Put it in  public/images/  and name it  hero-bg  (jpg, jpeg, png or webp all work).
+// The site tries each of these in order until one loads.
+export const HERO_BG_CANDIDATES = [
+  '/images/hero-bg.jpg',
+  '/images/hero-bg.jpeg',
+  '/images/hero-bg.png',
+  '/images/hero-bg.webp',
+  '/images/hero-bg.JPG',
+  '/images/hero-bg.JPEG',
+  '/images/hero-bg.PNG',
+  '/images/hero-bg.jpg.jpg',
+  '/images/hero-bg.png.png',
+]
 
 // Shown only if the file above is missing, so the hero is never empty.
 export const HERO_BG_FALLBACK =
